@@ -7,3 +7,6 @@ dist
 
 # test artifacts
 coverage
+
+# misc
+.DS_Store
