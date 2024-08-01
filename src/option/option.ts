@@ -8,8 +8,8 @@ type NonUndefined = {} | null; // eslint-disable-line @typescript-eslint/ban-typ
  * Enum-like object to represent the type of an Option (Some or None).
  */
 export const OptionType = {
-  Some: Symbol(':some'),
-  None: Symbol(':none'),
+  Some: Symbol(":some"),
+  None: Symbol(":none"),
 };
 
 /**
@@ -289,7 +289,7 @@ class NoneImpl<T extends NonUndefined> implements NoneOption<T> {
   }
 
   match<U>({ none }: Match<T, U>): U {
-    if (typeof none === 'function') {
+    if (typeof none === "function") {
       return (none as () => U)();
     }
 
@@ -319,7 +319,7 @@ class NoneImpl<T extends NonUndefined> implements NoneOption<T> {
   }
 
   unwrap(): never {
-    throw new ReferenceError('Trying to unwrap None.');
+    throw new ReferenceError("Trying to unwrap None.");
   }
 }
 
@@ -371,7 +371,9 @@ export const None: NoneOption<any> = new NoneImpl(); // eslint-disable-line @typ
  * }
  * ```
  */
-export function isSome<T extends NonUndefined>(val: Option<T>): val is SomeOption<T> {
+export function isSome<T extends NonUndefined>(
+  val: Option<T>,
+): val is SomeOption<T> {
   return val.isSome();
 }
 
@@ -392,6 +394,8 @@ export function isSome<T extends NonUndefined>(val: Option<T>): val is SomeOptio
  * }
  * ```
  */
-export function isNone<T extends NonUndefined>(val: Option<T>): val is NoneOption<T> {
+export function isNone<T extends NonUndefined>(
+  val: Option<T>,
+): val is NoneOption<T> {
   return val.isNone();
 }

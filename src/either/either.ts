@@ -1,4 +1,4 @@
-import { None, NoneOption, Option, Some, SomeOption } from '../option/option';
+import { None, NoneOption, Option, Some, SomeOption } from "../option/option";
 
 /**
  * Type representing any value except 'undefined'.
@@ -10,8 +10,8 @@ type NonUndefined = {} | null; // eslint-disable-line @typescript-eslint/ban-typ
  * Enum-like object for representing the state of an Either: Left or Right.
  */
 export const EitherType = {
-  Left: Symbol(':left'),
-  Right: Symbol(':right'),
+  Left: Symbol(":left"),
+  Right: Symbol(":right"),
 };
 
 /**
@@ -227,7 +227,9 @@ export interface Either<L extends NonUndefined, R extends NonUndefined> {
    * console.log(chained.unwrapLeft()); // "Processed initial error"
    * ```
    */
-  leftAndThen<U extends NonUndefined>(fn: (val: L) => Either<U, R>): Either<U, R>;
+  leftAndThen<U extends NonUndefined>(
+    fn: (val: L) => Either<U, R>,
+  ): Either<U, R>;
 
   /**
    * Transforms the Either by applying a function to its Right value if present, chaining multiple operations.
@@ -243,13 +245,16 @@ export interface Either<L extends NonUndefined, R extends NonUndefined> {
    * console.log(chained.unwrapRight()); // "42"
    * ```
    */
-  rightAndThen<U extends NonUndefined>(fn: (val: R) => Either<L, U>): Either<L, U>;
+  rightAndThen<U extends NonUndefined>(
+    fn: (val: R) => Either<L, U>,
+  ): Either<L, U>;
 }
 
 /**
  * Implementation of the Either interface for a Left value.
  */
-export interface LeftEither<L extends NonUndefined, R extends NonUndefined> extends Either<L, R> {
+export interface LeftEither<L extends NonUndefined, R extends NonUndefined>
+  extends Either<L, R> {
   unwrapLeft(): L;
   unwrapRight(): never;
   left(): SomeOption<L>;
@@ -261,7 +266,8 @@ export interface LeftEither<L extends NonUndefined, R extends NonUndefined> exte
 /**
  * Implementation of the Either interface for a Right value.
  */
-export interface RightEither<L extends NonUndefined, R extends NonUndefined> extends Either<L, R> {
+export interface RightEither<L extends NonUndefined, R extends NonUndefined>
+  extends Either<L, R> {
   unwrapLeft(): never;
   unwrapRight(): R;
   left(): NoneOption<L>;
@@ -273,7 +279,9 @@ export interface RightEither<L extends NonUndefined, R extends NonUndefined> ext
 /**
  * Implements the Either interface for a Left value.
  */
-class LeftImpl<L extends NonUndefined, R extends NonUndefined> implements Either<L, R> {
+class LeftImpl<L extends NonUndefined, R extends NonUndefined>
+  implements Either<L, R>
+{
   constructor(private readonly val: L) {}
 
   get type() {
@@ -305,7 +313,7 @@ class LeftImpl<L extends NonUndefined, R extends NonUndefined> implements Either
   }
 
   unwrapRight(): never {
-    throw new ReferenceError('Cannot unwrap Right value of Either.Left');
+    throw new ReferenceError("Cannot unwrap Right value of Either.Left");
   }
 
   unwrapLeftOr(_other: L): L {
@@ -328,11 +336,15 @@ class LeftImpl<L extends NonUndefined, R extends NonUndefined> implements Either
     return Left(this.val);
   }
 
-  leftAndThen<U extends NonUndefined>(fn: (val: L) => Either<U, R>): Either<U, R> {
+  leftAndThen<U extends NonUndefined>(
+    fn: (val: L) => Either<U, R>,
+  ): Either<U, R> {
     return fn(this.val);
   }
 
-  rightAndThen<U extends NonUndefined>(_fn: (val: R) => Either<L, U>): Either<L, U> {
+  rightAndThen<U extends NonUndefined>(
+    _fn: (val: R) => Either<L, U>,
+  ): Either<L, U> {
     return Left(this.val);
   }
 }
@@ -340,7 +352,9 @@ class LeftImpl<L extends NonUndefined, R extends NonUndefined> implements Either
 /**
  * Implements the Either interface for a Right value.
  */
-class RightImpl<L extends NonUndefined, R extends NonUndefined> implements Either<L, R> {
+class RightImpl<L extends NonUndefined, R extends NonUndefined>
+  implements Either<L, R>
+{
   constructor(private readonly val: R) {}
 
   get type() {
@@ -368,7 +382,7 @@ class RightImpl<L extends NonUndefined, R extends NonUndefined> implements Eithe
   }
 
   unwrapLeft(): never {
-    throw new ReferenceError('Cannot unwrap Left value of Either.Right');
+    throw new ReferenceError("Cannot unwrap Left value of Either.Right");
   }
 
   unwrapRight(): R {
@@ -395,11 +409,15 @@ class RightImpl<L extends NonUndefined, R extends NonUndefined> implements Eithe
     return Right(fn(this.val));
   }
 
-  leftAndThen<U extends NonUndefined>(_fn: (val: L) => Either<U, R>): Either<U, R> {
+  leftAndThen<U extends NonUndefined>(
+    _fn: (val: L) => Either<U, R>,
+  ): Either<U, R> {
     return Right(this.val);
   }
 
-  rightAndThen<U extends NonUndefined>(fn: (val: R) => Either<L, U>): Either<L, U> {
+  rightAndThen<U extends NonUndefined>(
+    fn: (val: R) => Either<L, U>,
+  ): Either<L, U> {
     return fn(this.val);
   }
 }

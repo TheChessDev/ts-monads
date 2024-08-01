@@ -1,4 +1,4 @@
-import { None, NoneOption, Option, Some, SomeOption } from '../option/option';
+import { None, NoneOption, Option, Some, SomeOption } from "../option/option";
 
 /**
  * Type representing any value except 'undefined'.
@@ -10,8 +10,8 @@ type NonUndefined = {} | null; // eslint-disable-line @typescript-eslint/ban-typ
  * Enum-like object to represent the type of a Result (Ok or Err).
  */
 export const ResultType = {
-  Ok: Symbol(':ok'),
-  Err: Symbol(':err'),
+  Ok: Symbol(":ok"),
+  Err: Symbol(":err"),
 };
 
 /**
@@ -229,7 +229,8 @@ export interface Result<T extends NonUndefined, E extends NonUndefined> {
 /**
  * Implementation of Result representing a successful value (Ok).
  */
-interface OkResult<T extends NonUndefined, E extends NonUndefined> extends Result<T, E> {
+interface OkResult<T extends NonUndefined, E extends NonUndefined>
+  extends Result<T, E> {
   ok(): SomeOption<T>;
   err(): NoneOption<E>;
   unwrap: () => T;
@@ -241,7 +242,8 @@ interface OkResult<T extends NonUndefined, E extends NonUndefined> extends Resul
 /**
  * Implementation of Result representing an error value (Err).
  */
-interface ErrResult<T extends NonUndefined, E extends NonUndefined> extends Result<T, E> {
+interface ErrResult<T extends NonUndefined, E extends NonUndefined>
+  extends Result<T, E> {
   ok(): NoneOption<T>;
   err(): SomeOption<E>;
   unwrap: () => never;
@@ -253,7 +255,9 @@ interface ErrResult<T extends NonUndefined, E extends NonUndefined> extends Resu
 /**
  * Represents a Ok Result.
  */
-class OkImpl<T extends NonUndefined, E extends NonUndefined> implements OkResult<T, E> {
+class OkImpl<T extends NonUndefined, E extends NonUndefined>
+  implements OkResult<T, E>
+{
   constructor(private readonly val: T) {}
 
   get type() {
@@ -301,7 +305,7 @@ class OkImpl<T extends NonUndefined, E extends NonUndefined> implements OkResult
   }
 
   unwrapErr(): never {
-    throw new ReferenceError('Cannot unwrap Err value of Result.Ok');
+    throw new ReferenceError("Cannot unwrap Err value of Result.Ok");
   }
 
   unwrapOr(_optb: T): T {
@@ -312,7 +316,9 @@ class OkImpl<T extends NonUndefined, E extends NonUndefined> implements OkResult
 /**
  * Represents an Err Result.
  */
-class ErrImpl<T extends NonUndefined, E extends NonUndefined> implements ErrResult<T, E> {
+class ErrImpl<T extends NonUndefined, E extends NonUndefined>
+  implements ErrResult<T, E>
+{
   constructor(private readonly val: E) {}
 
   get type() {
@@ -356,7 +362,7 @@ class ErrImpl<T extends NonUndefined, E extends NonUndefined> implements ErrResu
   }
 
   unwrap(): never {
-    throw new ReferenceError('Cannot unwrap Ok value of Result.Err');
+    throw new ReferenceError("Cannot unwrap Ok value of Result.Err");
   }
 
   unwrapErr(): E {
@@ -382,7 +388,9 @@ class ErrImpl<T extends NonUndefined, E extends NonUndefined> implements ErrResu
  * console.log(successResult.unwrap()); // Outputs: 42
  * ```
  */
-export function Ok<T extends NonUndefined, E extends NonUndefined = never>(val: T): OkResult<T, E> {
+export function Ok<T extends NonUndefined, E extends NonUndefined = never>(
+  val: T,
+): OkResult<T, E> {
   return new OkImpl(val);
 }
 
@@ -400,7 +408,9 @@ export function Ok<T extends NonUndefined, E extends NonUndefined = never>(val: 
  * console.log(errorResult.unwrapErr()); // Outputs: Something went wrong
  * ```
  */
-export function Err<T extends NonUndefined, E extends NonUndefined>(val: E): ErrResult<T, E> {
+export function Err<T extends NonUndefined, E extends NonUndefined>(
+  val: E,
+): ErrResult<T, E> {
   return new ErrImpl(val);
 }
 
