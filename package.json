@@ -1,5 +1,5 @@
 {
-    "name": "ts-monads",
+    "name": "@chessdev/ts-monads",
     "version": "1.0.0",
     "description": "Option, Result, and Either types for JavaScript - Inspired by Rust",
     "main": "dist/index.cjs.js",
