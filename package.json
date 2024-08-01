@@ -1,6 +1,6 @@
 {
     "name": "ts-monads",
-    "version": "0.7.0",
+    "version": "1.0.0",
     "description": "Option, Result, and Either types for JavaScript - Inspired by Rust",
     "main": "dist/index.cjs.js",
     "module": "dist/index.esm.js",
